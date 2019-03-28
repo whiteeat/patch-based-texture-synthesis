@@ -50,7 +50,7 @@ class patchBasedTextureSynthesis:
         if not self.snapshots:
             img = Image.fromarray(np.uint8(self.canvas*255))
             img = img.resize((self.outputSize[0], self.outputSize[1]), resample=0, box=None)
-            img.save(self.outputPath + 'out.jpg')
+            img.save(self.outputPath + 'out.png')
         else:
             self.visualize([0,0], [], [], showCandidates=False)
             
@@ -86,8 +86,9 @@ class patchBasedTextureSynthesis:
         self.filledMap[coord[0], coord[1]] = 1
         self.idMap[coord[0], coord[1]] = chosenPatchId
         
-        #visualize
-        self.visualize(coord, chosenPatchId, ind)
+        if self.snapshots:
+            #visualize
+            self.visualize(coord, chosenPatchId, ind)
         
         self.iter += 1
         
@@ -288,8 +289,10 @@ class patchBasedTextureSynthesis:
         self.idMap[0, 0] = patchId % self.total_patches_count
         #update canvas
         self.updateCanvas(patchId, 0, 0, False, False)
-        #visualize
-        self.visualize([0,0], [patchId], [])
+
+        if self.snapshots:
+            #visualize
+            self.visualize([0,0], [patchId], [])
 
         
     def prepareExamplePatches(self):
